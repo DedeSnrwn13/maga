@@ -4,26 +4,24 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use Filament\Forms\Set;
-use App\Models\Category;
+use App\Models\Author;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Support\Str;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\CategoryResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\CategoryResource\RelationManagers;
-use Filament\Forms\Components\FileUpload;
-use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\FileUpload;
+use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\AuthorResource\Pages;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Resources\AuthorResource\RelationManagers;
 
-class CategoryResource extends Resource
+class AuthorResource extends Resource
 {
-    protected static ?string $model = Category::class;
+    protected static ?string $model = Author::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-tag';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
     public static function form(Form $form): Form
     {
@@ -31,14 +29,11 @@ class CategoryResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    // ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
-                    // ->live(debounce: 250)
                     ->maxLength(255),
-                // TextInput::make('slug')
-                //     ->required()
-                //     ->disabled()
-                //     ->hidden(),
-                FileUpload::make('icon')
+                TextInput::make('occupation')
+                    ->required()
+                    ->maxLength(255),
+                FileUpload::make('avatar')
                     ->image()
                     ->required(),
             ]);
@@ -50,11 +45,10 @@ class CategoryResource extends Resource
             ->columns([
                 TextColumn::make('index')
                     ->rowIndex(),
-                ImageColumn::make('icon'),
+                ImageColumn::make(name: 'avatar'),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('slug'),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->searchable()
@@ -87,9 +81,9 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCategories::route('/'),
-            'create' => Pages\CreateCategory::route('/create'),
-            'edit' => Pages\EditCategory::route('/{record}/edit'),
+            'index' => Pages\ListAuthors::route('/'),
+            'create' => Pages\CreateAuthor::route('/create'),
+            'edit' => Pages\EditAuthor::route('/{record}/edit'),
         ];
     }
 }
