@@ -8,7 +8,7 @@ Route::name('front.')->group(function () {
 
     Route::get('/details/{article_news:slug}', [FrontController::class, 'details'])->name('details');
 
-    Route::get('category/{category:clug}', [FrontController::class, 'category']);
+    Route::get('category/{category:clug}', [FrontController::class, 'category'])->name('category');
 
     Route::get('/author/{author:slug}', [FrontController::class, 'author'])->name('author');
 
