@@ -94,4 +94,17 @@ class FrontController extends Controller
             'automotive_featured_articles'
         ));
     }
+
+    public function category(Category $category)
+    {
+        $categories = Category::all();
+        $banner_ads = BannerAdvertisement::where('is_active', 'active')
+            ->where('type', 'banner')
+            ->inRandomOrder()
+            // ->take(1)
+            // ->get();
+            ->first();
+
+        return view('front.category', compact('category', 'categories', 'banner_ads'));
+    }
 }
